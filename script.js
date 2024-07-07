@@ -11,13 +11,23 @@ const REPLACE_CHAR_LIST = {
     '｛': '︷',
     '｝': '︸',
   }
+
+  function toFullWidth(str) {
+    return str.split('').map(char => {
+      const code = char.charCodeAt(0);
+      if (code >= 0x21 && code <= 0x7E) {
+        return String.fromCharCode(code + 0xFEE0);
+      }
+      return char;
+    }).join('');
+  }
   
   function charToPush(line, ind) {
     if (line.length <= ind) {
       return '　'
     } else {
       let c = line[ind]
-        return REPLACE_CHAR_LIST[c] || c
+        return REPLACE_CHAR_LIST[c] || toFullWidth(c)
     }
   }
   
